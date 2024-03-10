@@ -1,4 +1,5 @@
 #include <wx/wx.h>
+#include <sqlite3/sqlite3.h>
 #include "FrameApp.h"
 
 class App : public wxApp {
@@ -12,4 +13,4 @@ public:
 	}
 };
 
-wxIMPLEMENT_APP(App);s
+wxIMPLEMENT_APP(App);
