@@ -8,6 +8,10 @@ public:
 		FrameApp* frameApp = new FrameApp("Komis Samochodowy :)");
 		frameApp->SetClientSize(800, 600);
 		frameApp->Center();
+		frameApp->SetMinClientSize(wxSize(800, 600));
+		frameApp->SetMaxClientSize(wxSize(800, 600));
+
+
 		frameApp->Show();
 		return true;
 	}

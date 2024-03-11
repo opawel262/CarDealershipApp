@@ -136,16 +136,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FrameApp.cpp" />
-    <ClCompile Include="InitialPanel.cpp" />
-    <ClCompile Include="LoginPanel.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="RegisterPanel.cpp" />
+    <ClCompile Include="Vehicle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameApp.h" />
-    <ClInclude Include="InitialPanel.h" />
-    <ClInclude Include="LoginPanel.h" />
-    <ClInclude Include="RegisterPanel.h" />
+    <ClInclude Include="Vehicle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
