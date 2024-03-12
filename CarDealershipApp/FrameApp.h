@@ -85,6 +85,31 @@ private:
 
 	wxButton* specificButtonBackAdmin;
 	wxPanel* specicInfoPanelAdmin;
+	wxStaticText* specificlabelId;
+	wxTextCtrl* specificInputId;
+	wxStaticText* specificLabelMileage;
+	wxTextCtrl* specificInputMileage;
+	wxStaticText* specificLabelPrice;
+	wxTextCtrl* specificInputPrice;
+	wxStaticText* specificLabelBrand;
+	wxTextCtrl* specificInputBrand;
+	wxStaticText* specificLabelModel;
+	wxTextCtrl* specificInputModel;
+	wxStaticText* specificLabelEngineCapacity;
+	wxTextCtrl* specficInputEngineCapacity;
+	wxStaticText* specificLabelBodyType;
+	wxTextCtrl* specificInputBodyType;
+	wxStaticText* specificLabelYear;
+	wxTextCtrl* specificInputYear;
+	wxStaticText* specificLabelEnginePower;
+	wxTextCtrl* specificInputEnginePower;
+	wxStaticText* specificLabelGearbox;
+	wxTextCtrl* specificInputGearbox;
+	wxStaticText* specificLabelSeatingCapacity;
+	wxTextCtrl* specificInputSeatingCapacity;
+	wxStaticText* specificLabelFuelType;
+	wxTextCtrl* specificInputFuelType;
+
 
 	
 	wxFont fontHeaderText;

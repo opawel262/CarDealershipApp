@@ -148,7 +148,46 @@ FrameApp::FrameApp(const wxString& title): wxFrame(NULL, wxID_ANY, title)
 
 	// INFO SPECIFIC PANEL
 	this->specicInfoPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(800, 600));
+
+	this->specificlabelId = new wxStaticText(this->specicInfoPanel, wxID_ANY, "ID: ", wxPoint(70, 120));
+	this->specificInputId = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 120), wxSize(180, 30), wxTE_READONLY);
+
+	this->specificLabelMileage = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Mileage: ", wxPoint(70, 170));
+	this->specificInputMileage = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 170), wxSize(180, 30), wxTE_READONLY);
+
+	this->specificLabelPrice = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Price: ", wxPoint(70, 220));
+	this->specificInputPrice = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 220), wxSize(180, 30), wxTE_READONLY);
+	this->specificInputPrice->disable
+
+	this->specificLabelBrand = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Brand: ", wxPoint(70, 270));
+	this->specificInputBrand = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 270), wxSize(180, 30), wxTE_READONLY);
+
+	this->specificLabelModel = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Model: ", wxPoint(70, 320));
+	this->specificInputModel = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 320), wxSize(180, 30), wxTE_READONLY);
+
+	this->specificLabelEngineCapacity = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Engine Capacity: ", wxPoint(70, 370));
+	this->specficInputEngineCapacity = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 370), wxSize(180, 30), wxTE_READONLY);
+
+	this->specificLabelBodyType = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Body Type: ", wxPoint(420, 120));
+	this->specificInputBodyType = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 120), wxSize(180, 30), wxTE_READONLY);
+
+	this->specificLabelYear = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Year: ", wxPoint(420, 170));
+	this->specificInputYear = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 170), wxSize(180, 30), wxTE_READONLY);
+
+	this->specificLabelEnginePower = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Engine Power: ", wxPoint(420, 220));
+	this->specificInputEnginePower = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 220), wxSize(180, 30), wxTE_READONLY);
+
+	this->specificLabelGearbox = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Gearbox: ", wxPoint(420, 270));
+	this->specificInputGearbox = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 270), wxSize(180, 30), wxTE_READONLY);
+
+	this->specificLabelSeatingCapacity = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Seating Capacity: ", wxPoint(420, 320));
+	this->specificInputSeatingCapacity = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 320), wxSize(180, 30), wxTE_READONLY);
+
+	this->specificLabelFuelType = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Fuel Type: ", wxPoint(420, 370));
+	this->specificInputFuelType = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 370), wxSize(180, 30), wxTE_READONLY);
+	this->specificButtonBack = new wxButton(this->specicInfoPanel, wxID_ANY, "Back", wxPoint(10, 10), wxSize(140, 40));
 	this->specicInfoPanel->Hide();
+
 
 
 
@@ -228,6 +267,7 @@ void FrameApp::OnButtonSpecificAdminBackClicked(wxCommandEvent& evt)
 
 void FrameApp::OnButtonSpecificEnterClicked(wxCommandEvent& evt)
 {
-
+	this->infoPanel->Hide();
+	this->specicInfoPanel->Show();
 
 }
