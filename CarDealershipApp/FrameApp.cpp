@@ -157,7 +157,6 @@ FrameApp::FrameApp(const wxString& title): wxFrame(NULL, wxID_ANY, title)
 
 	this->specificLabelPrice = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Price: ", wxPoint(70, 220));
 	this->specificInputPrice = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 220), wxSize(180, 30), wxTE_READONLY);
-	this->specificInputPrice->disable
 
 	this->specificLabelBrand = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Brand: ", wxPoint(70, 270));
 	this->specificInputBrand = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 270), wxSize(180, 30), wxTE_READONLY);
