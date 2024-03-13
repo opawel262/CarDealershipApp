@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
+﻿#define _CRT_SECURE_NO_WARNINGS
 #include "DataBaseConnector.h"
 #include <wx/wx.h>
 DataBaseConnector::DataBaseConnector(const std::string& file_name)
@@ -85,12 +85,12 @@ std::vector<Vehicle*> DataBaseConnector::GetAllVehicles()
             Vehicle* vehicle = new Vehicle();
 
             // Set properties of the vehicle object based on the columns in the result set
-            vehicle->setId(sqlite3_column_int(statement, 0));  // Assuming ID is the first column
+            vehicle->setId(sqlite3_column_int(statement, 0)); 
             vehicle->setMileage(sqlite3_column_int(statement, 1));
             vehicle->setPrice(sqlite3_column_double(statement, 2));
             vehicle->setBrand(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 3))));
             vehicle->setModel(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 4))));
-            vehicle->setEngineCapacity(sqlite3_column_int(statement, 5));
+            vehicle->setEngineCapacity(sqlite3_column_double(statement, 5));
             vehicle->setBodyType(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 6))));
             vehicle->setProductionYear(sqlite3_column_int(statement, 7));
             vehicle->setEnginePower(sqlite3_column_int(statement, 8));
@@ -115,25 +115,27 @@ std::vector<Vehicle*> DataBaseConnector::GetAllVehicles()
 void DataBaseConnector::AddVehicle(Vehicle& vehicle)
 {
     // SQLite query to insert a new record into the "Vehicle" table
-    this->query = "INSERT INTO Vehicle (mileage, price, brand, model, engineCapacity, bodyType, productionYear, enginePower, gearbox, seatingCapacity, fuelType) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    this->query = "INSERT INTO Vehicle (id, mileage, price, brand, model, engineCapacity, bodyType, productionYear, enginePower, gearbox, seatingCapacity, fuelType) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);";
 
     sqlite3_stmt* statement;
     int result = sqlite3_prepare_v2(dataBase, this->query.c_str(), -1, &statement, nullptr);
 
     if (result == SQLITE_OK)
     {
-        // Bind parameters with the values from the provided Vehicle object
-        sqlite3_bind_int(statement, 1, vehicle.getMileage());
-        sqlite3_bind_double(statement, 2, vehicle.getPrice());
-        sqlite3_bind_text(statement, 3, vehicle.getBrand().c_str(), -1, SQLITE_STATIC);
-        sqlite3_bind_text(statement, 4, vehicle.getModel().c_str(), -1, SQLITE_STATIC);
-        sqlite3_bind_int(statement, 5, vehicle.getEngineCapacity());
-        sqlite3_bind_text(statement, 6, vehicle.getBodyType().c_str(), -1, SQLITE_STATIC);
-        sqlite3_bind_int(statement, 7, vehicle.getProductionYear());
-        sqlite3_bind_int(statement, 8, vehicle.getEnginePower());
-        sqlite3_bind_text(statement, 9, vehicle.getGearbox().c_str(), -1, SQLITE_STATIC);
-        sqlite3_bind_int(statement, 10, vehicle.getSeatingCapacity());
-        sqlite3_bind_text(statement, 11, vehicle.getFuelType().c_str(), -1, SQLITE_STATIC);
+    // Bind parameters with the values from the provided Vehicle object
+        sqlite3_bind_int(statement, 1, vehicle.getId());
+        sqlite3_bind_int(statement, 2, vehicle.getMileage());
+        sqlite3_bind_double(statement, 3, vehicle.getPrice());
+        sqlite3_bind_text(statement, 4, vehicle.getBrand().c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(statement, 5, vehicle.getModel().c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_double(statement, 6, vehicle.getEngineCapacity());
+        sqlite3_bind_text(statement, 7, vehicle.getBodyType().c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int(statement, 8, vehicle.getProductionYear());
+        sqlite3_bind_int(statement, 9, vehicle.getEnginePower());
+        sqlite3_bind_text(statement, 10, vehicle.getGearbox().c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int(statement, 11, vehicle.getSeatingCapacity());
+        sqlite3_bind_text(statement, 12, vehicle.getFuelType().c_str(), -1, SQLITE_TRANSIENT);
+
 
         // Execute the insert statement
         result = sqlite3_step(statement);
@@ -151,7 +153,7 @@ void DataBaseConnector::AddVehicle(Vehicle& vehicle)
         wxLogError("Error preparing insert statement: %s", sqlite3_errmsg(dataBase));
     }
 }
-void DataBaseConnector::DeleteVehicle(Vehicle& vehicle)
+void DataBaseConnector::DeleteVehicle(int vehicleID)
 {
     // SQLite query to delete a record from the "Vehicle" table based on the vehicle's ID
     this->query = "DELETE FROM Vehicle WHERE id = ?;";
@@ -162,7 +164,7 @@ void DataBaseConnector::DeleteVehicle(Vehicle& vehicle)
     if (result == SQLITE_OK)
     {
         // Bind the vehicle ID as a parameter
-        sqlite3_bind_int(statement, 1, vehicle.getId());  // Assuming there is a method like getID() in your Vehicle class
+        sqlite3_bind_int(statement, 1, vehicleID);  // Assuming there is a method like getID() in your Vehicle class
 
         // Execute the delete statement
         result = sqlite3_step(statement);
@@ -180,10 +182,61 @@ void DataBaseConnector::DeleteVehicle(Vehicle& vehicle)
         wxLogError("Error preparing delete statement: %s", sqlite3_errmsg(dataBase));
     }
 }
-void DataBaseConnector::UpdateVehicleId(int vehicleID, int newVehicleID)
+Vehicle DataBaseConnector::getVehicle(int vehicleID)
 {
-    std::string updateQuery = "UPDATE Vehicle SET id = ? WHERE id = ?;";
-    ExecuteUpdateIntParameter(updateQuery, newVehicleID, vehicleID);
+    this->query = "SELECT * FROM Vehicle WHERE id = ?;";
+
+    Vehicle vehicle;
+    sqlite3_stmt* statement;
+
+    // Przygotuj zapytanie SQL z parametrem
+    int result = sqlite3_prepare_v2(dataBase, this->query.c_str(), -1, &statement, nullptr);
+
+    if (result == SQLITE_OK)
+    {
+        // Przypisz wartość do parametru w zapytaniu SQL
+        sqlite3_bind_int(statement, 1, vehicleID);
+
+        // Wykonaj zapytanie
+        result = sqlite3_step(statement);
+
+        if (result == SQLITE_ROW)
+        {
+            // Pobierz dane z kolumn
+            vehicle.setId(sqlite3_column_int(statement, 0));
+            vehicle.setMileage(sqlite3_column_int(statement, 1));
+            vehicle.setPrice(sqlite3_column_double(statement, 2));
+            vehicle.setBrand(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 3))));
+            vehicle.setModel(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 4))));
+            vehicle.setEngineCapacity(sqlite3_column_int(statement, 5));
+            vehicle.setBodyType(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 6))));
+            vehicle.setProductionYear(sqlite3_column_int(statement, 7));
+            vehicle.setEnginePower(sqlite3_column_int(statement, 8));
+            vehicle.setGearbox(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 9))));
+            vehicle.setSeatingCapacity(sqlite3_column_int(statement, 10));
+            vehicle.setFuelType(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 11))));
+        }
+        else
+        {
+            wxLogError("No vehicle found with ID: %d", vehicleID);
+        }
+
+        // Finalizuj zapytanie
+        sqlite3_finalize(statement);
+    }
+    else
+    {
+        wxLogError("Error preparing SQL statement");
+    }
+
+    return vehicle;
+}
+
+
+void DataBaseConnector::UpdateVehicleEngineCapacity(int vehicleID, double newEngineCapacity)
+{
+    std::string updateQuery = "UPDATE Vehicle SET engineCapacity = ? WHERE id = ?;";
+    ExecuteUpdateDoubleParameter(updateQuery, newEngineCapacity, vehicleID);
 }
 
 void DataBaseConnector::UpdateVehicleMileage(int vehicleID, int mileage) {
@@ -357,4 +410,21 @@ std::vector<Admin*> DataBaseConnector::GetAllAdmins()
     }
 
     return admins;
+}
+void DataBaseConnector::ExecuteUpdateDoubleParameter(const std::string& updateQuery, double parameter, int vehicleID)
+{
+    sqlite3_stmt* statement;
+    int result = sqlite3_prepare_v2(dataBase, updateQuery.c_str(), -1, &statement, nullptr);
+
+    if (result == SQLITE_OK)
+    {
+        sqlite3_bind_double(statement, 1, parameter);
+        sqlite3_bind_int(statement, 2, vehicleID);
+
+        ExecuteUpdateStatement(statement);
+    }
+    else
+    {
+        wxLogError("Error preparing update statement: %s", sqlite3_errmsg(dataBase));
+    }
 }

@@ -21,12 +21,17 @@ public:
 	std::vector<Vehicle*> GetAllVehicles();
 	std::vector<Admin*> GetAllAdmins();
 
-	void DeleteVehicle(Vehicle& vehicle);
+	void ExecuteUpdateDoubleParameter(const std::string& updateQuery, double parameter, int vehicleID);
+
+	void DeleteVehicle(int vehicleID);
+	Vehicle getVehicle(int vehicleID);
 
 	void AddVehicle(Vehicle& vehicle);
 	void AddAdmin(Admin& admin);
 
 	void UpdateVehicleId(int vehicleID, int newVehicleID);
+
+	void UpdateVehicleEngineCapacity(int vehicleID, double newEngineCapacity);
 
 	void UpdateVehicleMileage(int vehicleID, int newMileage);
 

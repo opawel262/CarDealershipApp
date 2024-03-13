@@ -1,15 +1,16 @@
 #include "vehicle.h"
 
-Vehicle::Vehicle(int engineCapacity, int id, const std::string& bodyType, int mileage,
-    int productionYear, int enginePower,
-    const std::string& gearbox, int seatingCapacity, const std::string& fuelType,
-    double price)
-    : engineCapacity(engineCapacity), id(id), bodyType(bodyType), mileage(mileage),
-    productionYear(productionYear),
-    enginePower(enginePower), gearbox(gearbox), seatingCapacity(seatingCapacity),
-    fuelType(fuelType), price(price) {}
+Vehicle::Vehicle(int id, int mileage, double price, const std::string& brand,
+    const std::string& model, int productionYear, double engineCapacity,
+    const std::string& bodyType, int enginePower, const std::string& gearbox,
+    int seatingCapacity, const std::string& fuelType)
+    : id(id), mileage(mileage), price(price), brand(brand), model(model),
+    productionYear(productionYear), engineCapacity(engineCapacity),
+    bodyType(bodyType), enginePower(enginePower), gearbox(gearbox),
+    seatingCapacity(seatingCapacity), fuelType(fuelType) {}
 
-int Vehicle::getEngineCapacity() const {
+double Vehicle::getEngineCapacity() const
+{
     return this->engineCapacity;
 }
 
@@ -59,12 +60,7 @@ std::string Vehicle::getModel() const
     return this->model;
 }
 
-void Vehicle::setId(int value)
-{
-    this->id = value;
-}
-
-void Vehicle::setEngineCapacity(int value) {
+void Vehicle::setEngineCapacity(double value) {
     this->engineCapacity = value;
 }
 
@@ -108,4 +104,9 @@ void Vehicle::setBrand(const std::string& value)
 void Vehicle::setModel(const std::string& value)
 {
     this->model = value;
+}
+
+void Vehicle::setId(int value)
+{
+    this->id = value;
 }

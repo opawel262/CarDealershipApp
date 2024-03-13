@@ -34,6 +34,8 @@ public:
 
 	void OnButtonAddBackClicked(wxCommandEvent& evt);
 
+	void OnButtonAddPanelSubmit(wxCommandEvent& evt);
+
 	void OnButtonEditIdCLicked(wxCommandEvent& evt);
 
 	void OnButtonEditMileageClicked(wxCommandEvent& evt);
@@ -58,6 +60,9 @@ public:
 
 	void OnButtonEditFuelTypeClicked(wxCommandEvent& evt);
 
+	void OnListItemSelected(wxListEvent& evt);
+
+	void UpdateVehiclePanelList();
 
 
 
@@ -65,6 +70,7 @@ public:
 private:
 	
 	bool adminLogged;
+	int selectedRowIndex;
 
 	wxPanel* initialPanel;
 	DataBaseConnector dataBase;
@@ -181,12 +187,8 @@ private:
 	wxTextCtrl* addInputFuelType;
 	wxButton* addButtonBack;
 
-
-	
 	wxFont fontHeaderText;
 	wxFont fontButtonText;
-	
-
 
 };
 

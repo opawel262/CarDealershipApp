@@ -11,7 +11,7 @@ private:
     double price;
     std::string brand;
     std::string model;
-    int engineCapacity;
+    double engineCapacity;
     std::string bodyType;
     int productionYear;
     int enginePower;
@@ -21,12 +21,12 @@ private:
 
 public:
     Vehicle() = default;
-    Vehicle(int engineCapacity, int id, const std::string& bodyType, int mileage,
-        int productionYear, int enginePower,
-        const std::string& gearbox, int seatingCapacity, const std::string& fuelType,
-        double price);
+    Vehicle(int id, int mileage, double price, const std::string& brand,
+        const std::string& model, int productionYear, double engineCapacity,
+        const std::string& bodyType, int enginePower, const std::string& gearbox,
+        int seatingCapacity, const std::string& fuelType);
 
-    int getEngineCapacity() const;
+    double getEngineCapacity() const;
     int getId() const;
     std::string getBodyType() const;
     int getMileage() const;
@@ -39,8 +39,7 @@ public:
     std::string getBrand() const;
     std::string getModel() const;
 
-    void setId(int value);
-    void setEngineCapacity(int value);
+    void setEngineCapacity(double value);
     void setBodyType(const std::string& value);
     void setMileage(int value);
     void setProductionYear(int value);
@@ -51,6 +50,7 @@ public:
     void setPrice(double value);
     void setBrand(const std::string& value);
     void setModel(const std::string& value);
+    void setId(int value);
 };
 
 #endif 
