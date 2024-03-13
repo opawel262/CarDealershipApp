@@ -34,6 +34,31 @@ public:
 
 	void OnButtonAddBackClicked(wxCommandEvent& evt);
 
+	void OnButtonEditIdCLicked(wxCommandEvent& evt);
+
+	void OnButtonEditMileageClicked(wxCommandEvent& evt);
+
+	void OnButtonEditPriceClicked(wxCommandEvent& evt);
+
+	void OnButtonEditBrandClicked(wxCommandEvent& evt);
+
+	void OnButtonEditModelClicked(wxCommandEvent& evt);
+
+	void OnButtonEditEngineCapacityClicked(wxCommandEvent& evt);
+
+	void OnButtonEditBodyTypeClicked(wxCommandEvent& evt);
+
+	void OnButtonEditYearClicked(wxCommandEvent& evt);
+
+	void OnButtonEditEnginePowerClicked(wxCommandEvent& evt);
+
+	void OnButtonEditGearboxClicked(wxCommandEvent& evt);
+
+	void OnButtonEditSeatingCapacityClicked(wxCommandEvent& evt);
+
+	void OnButtonEditFuelTypeClicked(wxCommandEvent& evt);
+
+
 
 
 

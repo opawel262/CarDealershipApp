@@ -26,6 +26,8 @@ public:
 	void AddVehicle(Vehicle& vehicle);
 	void AddAdmin(Admin& admin);
 
+	void UpdateVehicleId(int vehicleID, int newVehicleID);
+
 	void UpdateVehicleMileage(int vehicleID, int newMileage);
 
 	void UpdateVehiclePrice(int vehicleID, int price);
@@ -48,7 +50,3 @@ public:
 
 	void UpdateVehicleFuelType(int vehicleID, const std::string& newFuelType);
 };
-
-
-
-

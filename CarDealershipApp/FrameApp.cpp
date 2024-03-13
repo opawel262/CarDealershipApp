@@ -116,6 +116,7 @@ FrameApp::FrameApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title), data
 	this->infoListOfCar->InsertColumn(2, wxT("ID"));
 	this->infoListOfCar->InsertColumn(3, wxT("Brand"));
 	this->infoListOfCar->InsertColumn(4, wxT("Model"));
+	this->infoListOfCar->InsertColumn(5, wxT("Year"));
 	for (int i = 0;i < 111;i++) {
 		wxString carText;
 		carText.Printf("car %d", i);
@@ -152,6 +153,7 @@ FrameApp::FrameApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title), data
 
 	this->specificlabelId = new wxStaticText(this->specicInfoPanel, wxID_ANY, "ID: ", wxPoint(70, 125));
 	this->specificInputId = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 120), wxSize(180, 30), wxTE_READONLY);
+	//this->specificInputId->SetEditable(false);
 
 	this->specificLabelMileage = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Mileage: ", wxPoint(70, 175));
 	this->specificInputMileage = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 170), wxSize(180, 30), wxTE_READONLY);
@@ -196,7 +198,7 @@ FrameApp::FrameApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title), data
 	this->adminAddPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(800, 600));
 
 	this->addLabelId = new wxStaticText(this->adminAddPanel, wxID_ANY, "ID: ", wxPoint(70, 125));
-	this->specificInputId = new wxTextCtrl(this->adminAddPanel, wxID_ANY, "", wxPoint(170, 120), wxSize(180, 30));
+	this->addInputId = new wxTextCtrl(this->adminAddPanel, wxID_ANY, "", wxPoint(170, 120), wxSize(180, 30));
 
 	this->addLabelMileage = new wxStaticText(this->adminAddPanel, wxID_ANY, "Mileage: ", wxPoint(70, 175));
 	this->addInputMileage = new wxTextCtrl(this->adminAddPanel, wxID_ANY, "", wxPoint(170, 170), wxSize(180, 30));
@@ -236,14 +238,47 @@ FrameApp::FrameApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title), data
     // admin too
 
 	this->adminEnterAddPanel = new wxButton(this->infoPanel, wxID_ANY,"Add vehicle", wxPoint(330, 10), wxSize(140, 40));
+	this->adminEnterAddPanel->Hide();
 	this->adminEnterAddPanel->SetFont(this->fontButtonText);
 	this->adminEnterAddPanel->Bind(wxEVT_BUTTON, &FrameApp::OnButtonEnterAddPanel, this);
 
 	this->adminAddPanelSubmit = new wxButton(this->adminAddPanel, wxID_ANY, "Add vehicle", wxPoint(330, 510), wxSize(140, 40));
 
 	this->adminEditIdButton = new wxButton(this->specicInfoPanel, wxID_ANY, "Edit", wxPoint(360, 120), wxSize(40, 30));
-	this->adminEditIdButton->SetFont(this->fontButtonText);
+	this->adminEditIdButton->Bind(wxEVT_BUTTON, &FrameApp::OnButtonEditIdCLicked, this);
 
+	this->adminEditMileageButton = new wxButton(this->specicInfoPanel, wxID_ANY, "Edit", wxPoint(360, 170), wxSize(40, 30));
+	this->adminEditMileageButton->Bind(wxEVT_BUTTON, &FrameApp::OnButtonEditMileageClicked, this);
+
+	this->adminEditPriceButton = new wxButton(this->specicInfoPanel, wxID_ANY, "Edit", wxPoint(360, 220), wxSize(40, 30));
+	this->adminEditPriceButton->Bind(wxEVT_BUTTON, &FrameApp::OnButtonEditPriceClicked, this);
+
+	this->adminEditBrandButton = new wxButton(this->specicInfoPanel, wxID_ANY, "Edit", wxPoint(360, 270), wxSize(40, 30));
+	this->adminEditBrandButton->Bind(wxEVT_BUTTON, &FrameApp::OnButtonEditBrandClicked, this);
+
+	this->adminEditModelButton = new wxButton(this->specicInfoPanel, wxID_ANY, "Edit", wxPoint(360, 320), wxSize(40, 30));
+	this->adminEditModelButton->Bind(wxEVT_BUTTON, &FrameApp::OnButtonEditModelClicked, this);
+
+	this->adminEditEngineCapacityButton = new wxButton(this->specicInfoPanel, wxID_ANY, "Edit", wxPoint(360, 370), wxSize(40, 30));
+	this->adminEditEngineCapacityButton->Bind(wxEVT_BUTTON, &FrameApp::OnButtonEditEngineCapacityClicked, this);
+
+	this->adminEditBodyTypeButton = new wxButton(this->specicInfoPanel, wxID_ANY, "Edit", wxPoint(710, 120), wxSize(40, 30));
+	this->adminEditBodyTypeButton->Bind(wxEVT_BUTTON, &FrameApp::OnButtonEditBodyTypeClicked, this);
+
+	this->adminEditYearButton = new wxButton(this->specicInfoPanel, wxID_ANY, "Edit", wxPoint(710, 170), wxSize(40, 30));
+	this->adminEditYearButton->Bind(wxEVT_BUTTON, &FrameApp::OnButtonEditYearClicked, this);
+
+	this->adminEditEnginePowerButton = new wxButton(this->specicInfoPanel, wxID_ANY, "Edit", wxPoint(710, 220), wxSize(40, 30));
+	this->adminEditEnginePowerButton->Bind(wxEVT_BUTTON, &FrameApp::OnButtonEditEnginePowerClicked, this);
+
+	this->adminEditGearboxButton = new wxButton(this->specicInfoPanel, wxID_ANY, "Edit", wxPoint(710, 270), wxSize(40, 30));
+	this->adminEditGearboxButton->Bind(wxEVT_BUTTON, &FrameApp::OnButtonEditGearboxClicked, this);
+
+	this->adminEditSeatingCapacityButton = new wxButton(this->specicInfoPanel, wxID_ANY, "Edit", wxPoint(710, 320), wxSize(40, 30));
+	this->adminEditSeatingCapacityButton->Bind(wxEVT_BUTTON, &FrameApp::OnButtonEditSeatingCapacityClicked, this);
+
+	this->adminEditFuelTypeButton = new wxButton(this->specicInfoPanel, wxID_ANY, "Edit", wxPoint(710, 370), wxSize(40, 30));
+	this->adminEditFuelTypeButton->Bind(wxEVT_BUTTON, &FrameApp::OnButtonEditFuelTypeClicked, this);
 
 	this->adminEnterAddPanel->Hide();
 	this->adminAddPanel->Hide();
@@ -290,6 +325,7 @@ void FrameApp::OnButtonLoginClicked(wxCommandEvent& evt)
 			// declare elemnts for admin
 			this->adminEnterAddPanel->Show();
 			this->adminEditIdButton->Show();
+			this->adminEnterAddPanel->Hide();
 			wxMessageBox("Logged in successfully");
 		}
 	}
@@ -333,6 +369,7 @@ void FrameApp::OnButtonInfoBackClicked(wxCommandEvent& evt)
 {
 	this->infoPanel->Hide();
 	this->initialPanel->Show();
+	this->adminEnterAddPanel->Hide();
 	this->adminLogged = false;
 }
 
@@ -360,3 +397,141 @@ void FrameApp::OnButtonAddBackClicked(wxCommandEvent& evt)
 	this->adminAddPanel->Hide();
 	this->infoPanel->Show();
 }
+
+void FrameApp::OnButtonEditIdCLicked(wxCommandEvent& evt)
+
+{
+	if (adminEditIdButton->GetLabel() == "Edit") {
+		this->adminEditIdButton->SetLabel("Save");
+		this->specificInputId->SetEditable(true);
+
+	}
+	else {
+		this->specificInputId->SetEditable(false);
+		this->adminEditIdButton->SetLabel("Edit");
+		//this->dataBase.UpdateVehicleId(atoi(this->specificInputId->GetValue().ToStdString().c_str()), atoi(this->specificInputId->GetValue().ToStdString().c_str()));
+	}
+}
+
+void FrameApp::OnButtonEditMileageClicked(wxCommandEvent& evt)
+{
+	if (adminEditMileageButton->GetLabel() == "Edit") {
+		this->adminEditMileageButton->SetLabel("Save");
+		this->specificInputMileage->SetEditable(true);
+	}
+	else {
+		this->specificInputMileage->SetEditable(false);
+		this->adminEditMileageButton->SetLabel("Edit");
+	}
+}
+void FrameApp::OnButtonEditPriceClicked(wxCommandEvent& evt)
+{
+	if (adminEditPriceButton->GetLabel() == "Edit") {
+		this->adminEditPriceButton->SetLabel("Save");
+		this->specificInputPrice->SetEditable(true);
+	}
+	else {
+		this->specificInputPrice->SetEditable(false);
+		this->adminEditPriceButton->SetLabel("Edit");
+	}
+}
+void FrameApp::OnButtonEditBrandClicked(wxCommandEvent& evt)
+{
+	if (adminEditBrandButton->GetLabel() == "Edit") {
+		this->adminEditBrandButton->SetLabel("Save");
+		this->specificInputBrand->SetEditable(true);
+	}
+	else {
+		this->specificInputBrand->SetEditable(false);
+		this->adminEditBrandButton->SetLabel("Edit");
+	}
+}
+void FrameApp::OnButtonEditModelClicked(wxCommandEvent& evt)
+{
+	if (adminEditModelButton->GetLabel() == "Edit") {
+		this->adminEditModelButton->SetLabel("Save");
+		this->specificInputModel->SetEditable(true);
+	}
+	else {
+		this->specificInputModel->SetEditable(false);
+		this->adminEditModelButton->SetLabel("Edit");
+	}
+}
+void FrameApp::OnButtonEditEngineCapacityClicked(wxCommandEvent& evt)
+{
+	if (adminEditEngineCapacityButton->GetLabel() == "Edit") {
+		this->adminEditEngineCapacityButton->SetLabel("Save");
+		this->specficInputEngineCapacity->SetEditable(true);
+	}
+	else {
+		this->specficInputEngineCapacity->SetEditable(false);
+		this->adminEditEngineCapacityButton->SetLabel("Edit");
+	}
+}
+void FrameApp::OnButtonEditBodyTypeClicked(wxCommandEvent& evt)
+{
+	if (adminEditBodyTypeButton->GetLabel() == "Edit") {
+		this->adminEditBodyTypeButton->SetLabel("Save");
+		this->specificInputBodyType->SetEditable(true);
+	}
+	else {
+		this->specificInputBodyType->SetEditable(false);
+		this->adminEditBodyTypeButton->SetLabel("Edit");
+	}
+}
+void FrameApp::OnButtonEditYearClicked(wxCommandEvent& evt)
+{
+	if (adminEditYearButton->GetLabel() == "Edit") {
+		this->adminEditYearButton->SetLabel("Save");
+		this->specificInputYear->SetEditable(true);
+	}
+	else {
+		this->specificInputYear->SetEditable(false);
+		this->adminEditYearButton->SetLabel("Edit");
+	}
+}
+void FrameApp::OnButtonEditEnginePowerClicked(wxCommandEvent& evt)
+{
+	if (adminEditEnginePowerButton->GetLabel() == "Edit") {
+		this->adminEditEnginePowerButton->SetLabel("Save");
+		this->specificInputEnginePower->SetEditable(true);
+	}
+	else {
+		this->specificInputEnginePower->SetEditable(false);
+		this->adminEditEnginePowerButton->SetLabel("Edit");
+	}
+}
+void FrameApp::OnButtonEditGearboxClicked(wxCommandEvent& evt)
+{
+	if (adminEditGearboxButton->GetLabel() == "Edit") {
+		this->adminEditGearboxButton->SetLabel("Save");
+		this->specificInputGearbox->SetEditable(true);
+	}
+	else {
+		this->specificInputGearbox->SetEditable(false);
+		this->adminEditGearboxButton->SetLabel("Edit");
+	}
+}
+void FrameApp::OnButtonEditSeatingCapacityClicked(wxCommandEvent& evt)
+{
+	if (adminEditSeatingCapacityButton->GetLabel() == "Edit") {
+		this->adminEditSeatingCapacityButton->SetLabel("Save");
+		this->specificInputSeatingCapacity->SetEditable(true);
+	}
+	else {
+		this->specificInputSeatingCapacity->SetEditable(false);
+		this->adminEditSeatingCapacityButton->SetLabel("Edit");
+	}
+}
+void FrameApp::OnButtonEditFuelTypeClicked(wxCommandEvent& evt)
+{
+	if (adminEditFuelTypeButton->GetLabel() == "Edit") {
+		this->adminEditFuelTypeButton->SetLabel("Save");
+		this->specificInputFuelType->SetEditable(true);
+	}
+	else {
+		this->specificInputFuelType->SetEditable(false);
+		this->adminEditFuelTypeButton->SetLabel("Edit");
+	}
+}
+

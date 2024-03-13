@@ -180,6 +180,11 @@ void DataBaseConnector::DeleteVehicle(Vehicle& vehicle)
         wxLogError("Error preparing delete statement: %s", sqlite3_errmsg(dataBase));
     }
 }
+void DataBaseConnector::UpdateVehicleId(int vehicleID, int newVehicleID)
+{
+    std::string updateQuery = "UPDATE Vehicle SET id = ? WHERE id = ?;";
+    ExecuteUpdateIntParameter(updateQuery, newVehicleID, vehicleID);
+}
 
 void DataBaseConnector::UpdateVehicleMileage(int vehicleID, int mileage) {
     std::string updateQuery = "UPDATE Vehicle SET mileage = ? WHERE id = ?;";
