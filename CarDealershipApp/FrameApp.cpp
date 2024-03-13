@@ -120,7 +120,6 @@ FrameApp::FrameApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title), data
 	this->infoListOfCar->InsertColumn(5, wxT("Year"));
 
 	this->UpdateVehiclePanelList();
-	this->infoListOfCar->Bind(wxEVT_LIST_COL_CLICK, &FrameApp::OnColumnClick, this);
 
 
 	this->infoSearchInput = new wxTextCtrl(this->infoPanel, wxID_ANY, "", wxPoint(150, 70), wxSize(300, 22));
@@ -232,8 +231,8 @@ FrameApp::FrameApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title), data
 	this->addButtonBack = new wxButton(this->adminAddPanel, wxID_ANY, "Back", wxPoint(10, 10), wxSize(140, 40));
 	this->addButtonBack->SetFont(this->fontButtonText);
 	this->addButtonBack->Bind(wxEVT_BUTTON, &FrameApp::OnButtonAddBackClicked, this);
-    // admin too
-
+    
+	// admin too
 	this->adminEnterAddPanel = new wxButton(this->infoPanel, wxID_ANY,"Add vehicle", wxPoint(330, 10), wxSize(140, 40));
 	this->adminEnterAddPanel->Hide();
 	this->adminEnterAddPanel->SetFont(this->fontButtonText);

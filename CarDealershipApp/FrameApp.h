@@ -8,8 +8,6 @@ class FrameApp: public wxFrame
 public:
 	FrameApp(const wxString& title);
 
-	void OnColumnClick(wxListEvent& event);
-
 	void OnButtonEnterUserClicked(wxCommandEvent& evt);
 	
 	void OnButtonEnterAdminClicked(wxCommandEvent& evt);
