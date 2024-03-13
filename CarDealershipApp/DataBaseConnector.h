@@ -27,15 +27,25 @@ public:
 	void AddAdmin(Admin& admin);
 
 	void UpdateVehicleMileage(int vehicleID, int newMileage);
+
 	void UpdateVehiclePrice(int vehicleID, int price);
+
 	void UpdateVehicleBrand(int vehicleID, const std::string& newBrand);
+
 	void UpdateVehicleModel(int vehicleID, const std::string& newModel);
+
 	void UpdateVehicleEngineCapacity(int vehicleID, int newEngineCapacity);
+
 	void UpdateVehicleBodyType(int vehicleID, const std::string& newBodyType);
+
 	void UpdateVehicleProductionYear(int vehicleID, int newProductionYear);
+
 	void UpdateVehicleEnginePower(int vehicleID, int newEnginePower);
+
 	void UpdateVehicleGearbox(int vehicleID, const std::string& newGearbox);
+
 	void UpdateVehicleSeatingCapacity(int vehicleID, int newSeatingCapacity);
+
 	void UpdateVehicleFuelType(int vehicleID, const std::string& newFuelType);
 };
 

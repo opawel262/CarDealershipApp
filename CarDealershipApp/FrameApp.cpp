@@ -150,92 +150,99 @@ FrameApp::FrameApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title), data
 	this->specicInfoPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(800, 600));
 	this->specicInfoPanel->Hide();
 
-	this->specificlabelId = new wxStaticText(this->specicInfoPanel, wxID_ANY, "ID: ", wxPoint(70, 120));
+	this->specificlabelId = new wxStaticText(this->specicInfoPanel, wxID_ANY, "ID: ", wxPoint(70, 125));
 	this->specificInputId = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 120), wxSize(180, 30), wxTE_READONLY);
 
-	this->specificLabelMileage = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Mileage: ", wxPoint(70, 170));
+	this->specificLabelMileage = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Mileage: ", wxPoint(70, 175));
 	this->specificInputMileage = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 170), wxSize(180, 30), wxTE_READONLY);
 
-	this->specificLabelPrice = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Price: ", wxPoint(70, 220));
+	this->specificLabelPrice = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Price: ", wxPoint(70, 225));
 	this->specificInputPrice = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 220), wxSize(180, 30), wxTE_READONLY);
 
-	this->specificLabelBrand = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Brand: ", wxPoint(70, 270));
+	this->specificLabelBrand = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Brand: ", wxPoint(70, 275));
 	this->specificInputBrand = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 270), wxSize(180, 30), wxTE_READONLY);
 
-	this->specificLabelModel = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Model: ", wxPoint(70, 320));
+	this->specificLabelModel = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Model: ", wxPoint(70, 325));
 	this->specificInputModel = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 320), wxSize(180, 30), wxTE_READONLY);
 
-	this->specificLabelEngineCapacity = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Engine Capacity: ", wxPoint(70, 370));
+	this->specificLabelEngineCapacity = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Engine Capacity: ", wxPoint(70, 375));
 	this->specficInputEngineCapacity = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 370), wxSize(180, 30), wxTE_READONLY);
 
-	this->specificLabelBodyType = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Body Type: ", wxPoint(420, 120));
+	this->specificLabelBodyType = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Body Type: ", wxPoint(420, 125));
 	this->specificInputBodyType = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 120), wxSize(180, 30), wxTE_READONLY);
 
-	this->specificLabelYear = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Year: ", wxPoint(420, 170));
+	this->specificLabelYear = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Year: ", wxPoint(420, 175));
 	this->specificInputYear = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 170), wxSize(180, 30), wxTE_READONLY);
 
-	this->specificLabelEnginePower = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Engine Power: ", wxPoint(420, 220));
+	this->specificLabelEnginePower = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Engine Power: ", wxPoint(420, 225));
 	this->specificInputEnginePower = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 220), wxSize(180, 30), wxTE_READONLY);
 
-	this->specificLabelGearbox = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Gearbox: ", wxPoint(420, 270));
+	this->specificLabelGearbox = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Gearbox: ", wxPoint(420, 275));
 	this->specificInputGearbox = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 270), wxSize(180, 30), wxTE_READONLY);
 
-	this->specificLabelSeatingCapacity = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Seating Capacity: ", wxPoint(420, 320));
+	this->specificLabelSeatingCapacity = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Seating Capacity: ", wxPoint(420, 325));
 	this->specificInputSeatingCapacity = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 320), wxSize(180, 30), wxTE_READONLY);
 
-	this->specificLabelFuelType = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Fuel Type: ", wxPoint(420, 370));
+	this->specificLabelFuelType = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Fuel Type: ", wxPoint(420, 375));
 	this->specificInputFuelType = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 370), wxSize(180, 30), wxTE_READONLY);
+
 	this->specificButtonBack = new wxButton(this->specicInfoPanel, wxID_ANY, "Back", wxPoint(10, 10), wxSize(140, 40));
+	this->specificButtonBack->SetFont(this->fontButtonText);
 	this->specificButtonBack->Bind(wxEVT_BUTTON, &FrameApp::OnButtonSpecificBackClicked, this);
+
 
 
 	// Admin add vehicle Panel
 	this->adminAddPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(800, 600));
 
-	this->addLabelId = new wxStaticText(this->specicInfoPanel, wxID_ANY, "ID: ", wxPoint(70, 120));
-	this->specificInputId = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 120), wxSize(180, 30));
+	this->addLabelId = new wxStaticText(this->adminAddPanel, wxID_ANY, "ID: ", wxPoint(70, 125));
+	this->specificInputId = new wxTextCtrl(this->adminAddPanel, wxID_ANY, "", wxPoint(170, 120), wxSize(180, 30));
 
-	this->addLabelMileage = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Mileage: ", wxPoint(70, 170));
-	this->addInputMileage = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 170), wxSize(180, 30));
+	this->addLabelMileage = new wxStaticText(this->adminAddPanel, wxID_ANY, "Mileage: ", wxPoint(70, 175));
+	this->addInputMileage = new wxTextCtrl(this->adminAddPanel, wxID_ANY, "", wxPoint(170, 170), wxSize(180, 30));
 
-	this->addLabelPrice = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Price: ", wxPoint(70, 220));
-	this->addInputPrice = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 220), wxSize(180, 30));
+	this->addLabelPrice = new wxStaticText(this->adminAddPanel, wxID_ANY, "Price: ", wxPoint(70, 225));
+	this->addInputPrice = new wxTextCtrl(this->adminAddPanel, wxID_ANY, "", wxPoint(170, 220), wxSize(180, 30));
 
-	this->addLabelBrand = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Brand: ", wxPoint(70, 270));
-	this->addInputBrand = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 270), wxSize(180, 30));
+	this->addLabelBrand = new wxStaticText(this->adminAddPanel, wxID_ANY, "Brand: ", wxPoint(70, 275));
+	this->addInputBrand = new wxTextCtrl(this->adminAddPanel, wxID_ANY, "", wxPoint(170, 270), wxSize(180, 30));
 
-	this->addLabelModel = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Model: ", wxPoint(70, 320));
-	this->addInputModel = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 320), wxSize(180, 30));
+	this->addLabelModel = new wxStaticText(this->adminAddPanel, wxID_ANY, "Model: ", wxPoint(70, 325));
+	this->addInputModel = new wxTextCtrl(this->adminAddPanel, wxID_ANY, "", wxPoint(170, 320), wxSize(180, 30));
 
-	this->addLabelEngineCapacity = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Engine Capacity: ", wxPoint(70, 370));
-	this->addInputEngineCapacity = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 370), wxSize(180, 30));
+	this->addLabelEngineCapacity = new wxStaticText(this->adminAddPanel, wxID_ANY, "Engine Capacity: ", wxPoint(70, 375));
+	this->addInputEngineCapacity = new wxTextCtrl(this->adminAddPanel, wxID_ANY, "", wxPoint(170, 370), wxSize(180, 30));
 
-	this->addLabelBodyType = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Body Type: ", wxPoint(420, 120));
-	this->addInputBodyType = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 120), wxSize(180, 30));
+	this->addLabelBodyType = new wxStaticText(this->adminAddPanel, wxID_ANY, "Body Type: ", wxPoint(420, 125));
+	this->addInputBodyType = new wxTextCtrl(this->adminAddPanel, wxID_ANY, "", wxPoint(520, 120), wxSize(180, 30));
 
-	this->addLabelYear = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Year: ", wxPoint(420, 170));
-	this->addInputYear = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 170), wxSize(180, 30));
+	this->addLabelYear = new wxStaticText(this->adminAddPanel, wxID_ANY, "Year: ", wxPoint(420, 175));
+	this->addInputYear = new wxTextCtrl(this->adminAddPanel, wxID_ANY, "", wxPoint(520, 170), wxSize(180, 30));
 
-	this->addLabelEnginePower = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Engine Power: ", wxPoint(420, 220));
-	this->addInputEnginePower = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 220), wxSize(180, 30));
+	this->addLabelEnginePower = new wxStaticText(this->adminAddPanel, wxID_ANY, "Engine Power: ", wxPoint(420, 225));
+	this->addInputEnginePower = new wxTextCtrl(this->adminAddPanel, wxID_ANY, "", wxPoint(520, 220), wxSize(180, 30));
 
-	this->addLabelGearbox = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Gearbox: ", wxPoint(420, 270));
-	this->addInputGearbox = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 270), wxSize(180, 30));
+	this->addLabelGearbox = new wxStaticText(this->adminAddPanel, wxID_ANY, "Gearbox: ", wxPoint(420, 275));
+	this->addInputGearbox = new wxTextCtrl(this->adminAddPanel, wxID_ANY, "", wxPoint(520, 270), wxSize(180, 30));
 
-	this->addLabelSeatingCapacity = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Seating Capacity: ", wxPoint(420, 320));
-	this->addInputSeatingCapacity = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 320), wxSize(180, 30));
+	this->addLabelSeatingCapacity = new wxStaticText(this->adminAddPanel, wxID_ANY, "Seating Capacity: ", wxPoint(420, 325));
+	this->addInputSeatingCapacity = new wxTextCtrl(this->adminAddPanel, wxID_ANY, "", wxPoint(520, 320), wxSize(180, 30));
 
-	this->addLabelFuelType = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Fuel Type: ", wxPoint(420, 370));
-	this->addInputFuelType = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 370), wxSize(180, 30));
-	this->addButtonBack = new wxButton(this->specicInfoPanel, wxID_ANY, "Back", wxPoint(10, 10), wxSize(140, 40));
-	
+	this->addLabelFuelType = new wxStaticText(this->adminAddPanel, wxID_ANY, "Fuel Type: ", wxPoint(420, 375));
+	this->addInputFuelType = new wxTextCtrl(this->adminAddPanel, wxID_ANY, "", wxPoint(520, 370), wxSize(180, 30));
+	this->addButtonBack = new wxButton(this->adminAddPanel, wxID_ANY, "Back", wxPoint(10, 10), wxSize(140, 40));
+	this->addButtonBack->SetFont(this->fontButtonText);
+	this->addButtonBack->Bind(wxEVT_BUTTON, &FrameApp::OnButtonAddBackClicked, this);
     // admin too
 
-	this->adminEnterAddPanel = new wxButton(this->infoPanel, wxID_ANY,"Add vehicle", wxPoint(500, 500), wxSize(140, 40));
+	this->adminEnterAddPanel = new wxButton(this->infoPanel, wxID_ANY,"Add vehicle", wxPoint(330, 10), wxSize(140, 40));
+	this->adminEnterAddPanel->SetFont(this->fontButtonText);
+	this->adminEnterAddPanel->Bind(wxEVT_BUTTON, &FrameApp::OnButtonEnterAddPanel, this);
 
-	this->adminAddPanelSubmit = new wxButton(this->adminAddPanel, wxID_ANY, "Submit", wxPoint(500, 500), wxSize(140, 40));
+	this->adminAddPanelSubmit = new wxButton(this->adminAddPanel, wxID_ANY, "Add vehicle", wxPoint(330, 510), wxSize(140, 40));
 
 	this->adminEditIdButton = new wxButton(this->specicInfoPanel, wxID_ANY, "Edit", wxPoint(360, 120), wxSize(40, 30));
+	this->adminEditIdButton->SetFont(this->fontButtonText);
 
 
 	this->adminEnterAddPanel->Hide();
@@ -250,7 +257,6 @@ void FrameApp::OnColumnClick(wxListEvent& event) {
 	// Pobieranie indeksu klikniętej kolumny
 	int columnIndex = event.GetColumn();
 
-	// Sortowanie tabeli według klikniętej kolumny
 }
 void FrameApp::OnButtonEnterUserClicked(wxCommandEvent& evt)
 {
@@ -282,10 +288,9 @@ void FrameApp::OnButtonLoginClicked(wxCommandEvent& evt)
 			this->adminLogged = true;
 
 			// declare elemnts for admin
-			wxMessageBox("Logged in successfully");
 			this->adminEnterAddPanel->Show();
-			this->adminAddPanel->Show();
 			this->adminEditIdButton->Show();
+			wxMessageBox("Logged in successfully");
 		}
 	}
 	if(!adminLogged) wxMessageBox("Incorrect credentials");
@@ -328,6 +333,7 @@ void FrameApp::OnButtonInfoBackClicked(wxCommandEvent& evt)
 {
 	this->infoPanel->Hide();
 	this->initialPanel->Show();
+	this->adminLogged = false;
 }
 
 void FrameApp::OnButtonSpecificBackClicked(wxCommandEvent& evt)
@@ -341,4 +347,16 @@ void FrameApp::OnButtonSpecificEnterClicked(wxCommandEvent& evt)
 	this->infoPanel->Hide();
 	this->specicInfoPanel->Show();
 
+}
+
+void FrameApp::OnButtonEnterAddPanel(wxCommandEvent& evt)
+{
+	this->infoPanel->Hide();
+	this->adminAddPanel->Show();
+}
+
+void FrameApp::OnButtonAddBackClicked(wxCommandEvent& evt)
+{
+	this->adminAddPanel->Hide();
+	this->infoPanel->Show();
 }

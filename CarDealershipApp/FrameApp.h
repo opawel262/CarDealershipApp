@@ -30,6 +30,10 @@ public:
 
 	void OnButtonSpecificEnterClicked(wxCommandEvent& evt);
 
+	void OnButtonEnterAddPanel(wxCommandEvent& evt);
+
+	void OnButtonAddBackClicked(wxCommandEvent& evt);
+
 
 
 
