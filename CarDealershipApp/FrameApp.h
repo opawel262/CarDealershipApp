@@ -1,6 +1,7 @@
 #pragma once
 #include <wx/wx.h>
 #include <wx/listctrl.h>
+#include "DataBaseConnector.h"
 
 class FrameApp: public wxFrame
 {
@@ -27,17 +28,18 @@ public:
 
 	void OnButtonSpecificBackClicked(wxCommandEvent& evt);
 
-	void OnButtonInfoAdminBackClicked(wxCommandEvent& evt);
-
-	void OnButtonSpecificAdminBackClicked(wxCommandEvent& evt);
-
 	void OnButtonSpecificEnterClicked(wxCommandEvent& evt);
 
 
 
 
 private:
+	
+	bool adminLogged;
+
 	wxPanel* initialPanel;
+	DataBaseConnector dataBase;
+
 	wxStaticText* initialStaticText;
 	wxButton* initialButtonEnterUser;
 	wxButton* initialButtonEnterAdmin;
@@ -81,10 +83,7 @@ private:
 	wxPanel* specicInfoPanel;
 
 	wxButton* infoButtonBackAdmin;
-	wxPanel* infoPanelAdmin;
 
-	wxButton* specificButtonBackAdmin;
-	wxPanel* specicInfoPanelAdmin;
 	wxStaticText* specificlabelId;
 	wxTextCtrl* specificInputId;
 	wxStaticText* specificLabelMileage;
@@ -109,6 +108,49 @@ private:
 	wxTextCtrl* specificInputSeatingCapacity;
 	wxStaticText* specificLabelFuelType;
 	wxTextCtrl* specificInputFuelType;
+
+
+	wxButton* adminEnterAddPanel;
+	wxButton* adminEditIdButton;
+	wxButton* adminEditMileageButton;
+	wxButton* adminEditPriceButton;
+	wxButton* adminEditBrandButton;
+	wxButton* adminEditModelButton;
+	wxButton* adminEditEngineCapacityButton;
+	wxButton* adminEditBodyTypeButton;
+	wxButton* adminEditYearButton;
+	wxButton* adminEditEnginePowerButton;
+	wxButton* adminEditGearboxButton;
+	wxButton* adminEditSeatingCapacityButton;
+	wxButton* adminEditFuelTypeButton;
+	
+	wxPanel* adminAddPanel;
+	wxButton* adminAddPanelSubmit;
+	wxStaticText* addLabelId;
+	wxTextCtrl* addInputId;
+	wxStaticText* addLabelMileage;
+	wxTextCtrl* addInputMileage;
+	wxStaticText* addLabelPrice;
+	wxTextCtrl* addInputPrice;
+	wxStaticText* addLabelBrand;
+	wxTextCtrl* addInputBrand;
+	wxStaticText* addLabelModel;
+	wxTextCtrl* addInputModel;
+	wxStaticText* addLabelEngineCapacity;
+	wxTextCtrl* addInputEngineCapacity;
+	wxStaticText* addLabelBodyType;
+	wxTextCtrl* addInputBodyType;
+	wxStaticText* addLabelYear;
+	wxTextCtrl* addInputYear;
+	wxStaticText* addLabelEnginePower;
+	wxTextCtrl* addInputEnginePower;
+	wxStaticText* addLabelGearbox;
+	wxTextCtrl* addInputGearbox;
+	wxStaticText* addLabelSeatingCapacity;
+	wxTextCtrl* addInputSeatingCapacity;
+	wxStaticText* addLabelFuelType;
+	wxTextCtrl* addInputFuelType;
+	wxButton* addButtonBack;
 
 
 	

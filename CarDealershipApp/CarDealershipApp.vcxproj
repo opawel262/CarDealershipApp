@@ -135,11 +135,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\include\sqlite3\sqlite3.c" />
+    <ClCompile Include="Admin.cpp" />
+    <ClCompile Include="DataBaseConnector.cpp" />
     <ClCompile Include="FrameApp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Vehicle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\sqlite3\sqlite3.h" />
+    <ClInclude Include="Admin.h" />
+    <ClInclude Include="DataBaseConnector.h" />
     <ClInclude Include="FrameApp.h" />
     <ClInclude Include="Vehicle.h" />
   </ItemGroup>

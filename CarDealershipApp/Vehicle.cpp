@@ -59,6 +59,11 @@ std::string Vehicle::getModel() const
     return this->model;
 }
 
+void Vehicle::setId(int value)
+{
+    this->id = value;
+}
+
 void Vehicle::setEngineCapacity(int value) {
     this->engineCapacity = value;
 }

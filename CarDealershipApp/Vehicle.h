@@ -20,6 +20,7 @@ private:
     std::string fuelType;
 
 public:
+    Vehicle() = default;
     Vehicle(int engineCapacity, int id, const std::string& bodyType, int mileage,
         int productionYear, int enginePower,
         const std::string& gearbox, int seatingCapacity, const std::string& fuelType,
@@ -38,6 +39,7 @@ public:
     std::string getBrand() const;
     std::string getModel() const;
 
+    void setId(int value);
     void setEngineCapacity(int value);
     void setBodyType(const std::string& value);
     void setMileage(int value);

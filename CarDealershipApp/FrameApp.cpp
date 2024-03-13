@@ -1,6 +1,6 @@
 ﻿#include "FrameApp.h"
 
-FrameApp::FrameApp(const wxString& title): wxFrame(NULL, wxID_ANY, title)
+FrameApp::FrameApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title), dataBase("baza_danych"), adminLogged(false)
 {
 	this->fontButtonText.SetFaceName("Sans Serif");
 	this->fontHeaderText.SetFaceName("Sans Serif");
@@ -148,6 +148,7 @@ FrameApp::FrameApp(const wxString& title): wxFrame(NULL, wxID_ANY, title)
 
 	// INFO SPECIFIC PANEL
 	this->specicInfoPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(800, 600));
+	this->specicInfoPanel->Hide();
 
 	this->specificlabelId = new wxStaticText(this->specicInfoPanel, wxID_ANY, "ID: ", wxPoint(70, 120));
 	this->specificInputId = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 120), wxSize(180, 30), wxTE_READONLY);
@@ -185,8 +186,61 @@ FrameApp::FrameApp(const wxString& title): wxFrame(NULL, wxID_ANY, title)
 	this->specificLabelFuelType = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Fuel Type: ", wxPoint(420, 370));
 	this->specificInputFuelType = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 370), wxSize(180, 30), wxTE_READONLY);
 	this->specificButtonBack = new wxButton(this->specicInfoPanel, wxID_ANY, "Back", wxPoint(10, 10), wxSize(140, 40));
-	this->specicInfoPanel->Hide();
+	this->specificButtonBack->Bind(wxEVT_BUTTON, &FrameApp::OnButtonSpecificBackClicked, this);
 
+
+	// Admin add vehicle Panel
+	this->adminAddPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(800, 600));
+
+	this->addLabelId = new wxStaticText(this->specicInfoPanel, wxID_ANY, "ID: ", wxPoint(70, 120));
+	this->specificInputId = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 120), wxSize(180, 30));
+
+	this->addLabelMileage = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Mileage: ", wxPoint(70, 170));
+	this->addInputMileage = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 170), wxSize(180, 30));
+
+	this->addLabelPrice = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Price: ", wxPoint(70, 220));
+	this->addInputPrice = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 220), wxSize(180, 30));
+
+	this->addLabelBrand = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Brand: ", wxPoint(70, 270));
+	this->addInputBrand = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 270), wxSize(180, 30));
+
+	this->addLabelModel = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Model: ", wxPoint(70, 320));
+	this->addInputModel = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 320), wxSize(180, 30));
+
+	this->addLabelEngineCapacity = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Engine Capacity: ", wxPoint(70, 370));
+	this->addInputEngineCapacity = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(170, 370), wxSize(180, 30));
+
+	this->addLabelBodyType = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Body Type: ", wxPoint(420, 120));
+	this->addInputBodyType = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 120), wxSize(180, 30));
+
+	this->addLabelYear = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Year: ", wxPoint(420, 170));
+	this->addInputYear = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 170), wxSize(180, 30));
+
+	this->addLabelEnginePower = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Engine Power: ", wxPoint(420, 220));
+	this->addInputEnginePower = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 220), wxSize(180, 30));
+
+	this->addLabelGearbox = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Gearbox: ", wxPoint(420, 270));
+	this->addInputGearbox = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 270), wxSize(180, 30));
+
+	this->addLabelSeatingCapacity = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Seating Capacity: ", wxPoint(420, 320));
+	this->addInputSeatingCapacity = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 320), wxSize(180, 30));
+
+	this->addLabelFuelType = new wxStaticText(this->specicInfoPanel, wxID_ANY, "Fuel Type: ", wxPoint(420, 370));
+	this->addInputFuelType = new wxTextCtrl(this->specicInfoPanel, wxID_ANY, "", wxPoint(520, 370), wxSize(180, 30));
+	this->addButtonBack = new wxButton(this->specicInfoPanel, wxID_ANY, "Back", wxPoint(10, 10), wxSize(140, 40));
+	
+    // admin too
+
+	this->adminEnterAddPanel = new wxButton(this->infoPanel, wxID_ANY,"Add vehicle", wxPoint(500, 500), wxSize(140, 40));
+
+	this->adminAddPanelSubmit = new wxButton(this->adminAddPanel, wxID_ANY, "Submit", wxPoint(500, 500), wxSize(140, 40));
+
+	this->adminEditIdButton = new wxButton(this->specicInfoPanel, wxID_ANY, "Edit", wxPoint(360, 120), wxSize(40, 30));
+
+
+	this->adminEnterAddPanel->Hide();
+	this->adminAddPanel->Hide();
+	this->adminEditIdButton->Hide();
 
 
 
@@ -218,14 +272,44 @@ void FrameApp::OnButtonEnterRegister(wxCommandEvent& evt)
 
 void FrameApp::OnButtonLoginClicked(wxCommandEvent& evt)
 {
-	this->loginPanel->Hide();
-	this->infoPanelAdmin->Show();
+	std::string username = this->loginUsernameInput->GetValue().ToStdString();
+	std::string password = this->loginPasswordInput->GetValue().ToStdString();
+
+	for (auto& admin : this->dataBase.GetAllAdmins()) {
+		if (admin->getUsername() == username && admin->getPassword() == password) {
+			this->loginPanel->Hide();
+			this->infoPanel->Show();
+			this->adminLogged = true;
+
+			// declare elemnts for admin
+			wxMessageBox("Logged in successfully");
+			this->adminEnterAddPanel->Show();
+			this->adminAddPanel->Show();
+			this->adminEditIdButton->Show();
+		}
+	}
+	if(!adminLogged) wxMessageBox("Incorrect credentials");
+
+
+
 }
 
 void FrameApp::OnButtonRegisterClicked(wxCommandEvent& evt)
 {
-	this->registerPanel->Hide();
-	this->loginPanel->Show();
+	wxString username = this->registerUsernameInput->GetValue();
+	wxString password = this->registerPasswordInput->GetValue();
+	if (this->registerCodeInput->GetValue() == "informatyka" && password == registerPasswordInputRepeat->GetValue()) {
+
+		Admin newAdmin(username.ToStdString(), password.ToStdString());
+		this->dataBase.AddAdmin(newAdmin);
+		this->registerPanel->Hide();
+		this->loginPanel->Show();
+		wxMessageBox("Successfully registered.");
+	}
+	else {
+		wxMessageBox("Not registered because you provided an incorrect code");
+	}
+
 }
 
 void FrameApp::OnButtonLoginBackClicked(wxCommandEvent& evt)
@@ -250,18 +334,6 @@ void FrameApp::OnButtonSpecificBackClicked(wxCommandEvent& evt)
 {
 	this->specicInfoPanel->Hide();
 	this->infoPanel->Show();
-}
-
-void FrameApp::OnButtonInfoAdminBackClicked(wxCommandEvent& evt)
-{
-	this->infoPanelAdmin->Hide();
-	this->loginPanel->Show();
-}
-
-void FrameApp::OnButtonSpecificAdminBackClicked(wxCommandEvent& evt)
-{
-	this->specicInfoPanelAdmin->Hide();
-	this->infoPanelAdmin->Show();
 }
 
 void FrameApp::OnButtonSpecificEnterClicked(wxCommandEvent& evt)
