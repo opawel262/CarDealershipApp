@@ -8,8 +8,8 @@ class DataBaseConnector
 private:
 	sqlite3* dataBase;
 	std::string query;
-	std::vector<Vehicle*> allVehicles;
-	std::vector<Admin*> allAdmins;
+	std::vector<Vehicle> allVehicles;
+	std::vector<Admin> allAdmins;
 
 	void ExecuteUpdateStringParameter(const std::string& updateQuery, const std::string& parameter, int vehicleID);
 	void ExecuteUpdateIntParameter(const std::string& updateQuery, int parameter, int vehicleID);
@@ -18,18 +18,19 @@ public:
 	DataBaseConnector(const std::string& file_name);
 	~DataBaseConnector();
 
-	std::vector<Vehicle*> GetAllVehicles();
-	std::vector<Admin*> GetAllAdmins();
+	std::vector<Vehicle> GetAllVehicles();
+	std::vector<Admin> GetAllAdmins();
 
 	void ExecuteUpdateDoubleParameter(const std::string& updateQuery, double parameter, int vehicleID);
 
 	void DeleteVehicle(int vehicleID);
 	Vehicle getVehicle(int vehicleID);
+	std::vector<Vehicle> getVehicleWithFilter(const std::string& filter, const std::string& value);
 
 	void AddVehicle(Vehicle& vehicle);
 	void AddAdmin(Admin& admin);
 
-	void UpdateVehicleId(int vehicleID, int newVehicleID);
+	//void UpdateVehicleId(int vehicleID, int newVehicleID);
 
 	void UpdateVehicleEngineCapacity(int vehicleID, double newEngineCapacity);
 

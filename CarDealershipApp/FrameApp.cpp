@@ -114,7 +114,7 @@ FrameApp::FrameApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title), data
 
 	this->infoListOfCar->InsertColumn(0, wxT("ID"));
 	this->infoListOfCar->InsertColumn(1, wxT("Price"));
-	this->infoListOfCar->InsertColumn(2, wxT("Mileages"));
+	this->infoListOfCar->InsertColumn(2, wxT("Mileage"));
 	this->infoListOfCar->InsertColumn(3, wxT("Brand"));
 	this->infoListOfCar->InsertColumn(4, wxT("Model"));
 	this->infoListOfCar->InsertColumn(5, wxT("Year"));
@@ -123,22 +123,27 @@ FrameApp::FrameApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title), data
 
 
 	this->infoSearchInput = new wxTextCtrl(this->infoPanel, wxID_ANY, "", wxPoint(150, 70), wxSize(300, 22));
+	this->infoSearchInput->Bind(wxEVT_TEXT, &FrameApp::OnSearchInput, this);
 
 	this->infoChoices = new wxArrayString();
 	this->infoChoices->Add(wxT("price"));
-	this->infoChoices->Add(wxT("mileages"));
+	this->infoChoices->Add(wxT("mileage"));
 	this->infoChoices->Add(wxT("id"));
 	this->infoChoices->Add(wxT("brand"));
 	this->infoChoices->Add(wxT("model"));
+	this->infoChoices->Add(wxT("year"));
 
 	this->infoChoiceSearchBy = new wxChoice(this->infoPanel, wxID_ANY, wxPoint(470, 70), wxSize(80, 25), *this->infoChoices);
 	this->infoChoiceSearchBy->SetSelection(0);
 
-	this->infoSearchButton = new wxButton(this->infoPanel, wxID_ANY, "Search",  wxPoint(570, 70), wxSize(80, 25));
-
-	this->infoButtonEnterSpecific = new wxButton(this->infoPanel, wxID_ANY, "More info", wxPoint(330, 510), wxSize(140, 40));
+	this->infoButtonEnterSpecific = new wxButton(this->infoPanel, wxID_ANY, "More info", wxPoint(250, 510), wxSize(140, 40));
 	this->infoButtonEnterSpecific->SetFont(this->fontButtonText);
 	this->infoButtonEnterSpecific->Bind(wxEVT_BUTTON, &FrameApp::OnButtonSpecificEnterClicked, this);
+
+	this->infoButtonDelete = new wxButton(this->infoPanel, wxID_ANY, "Delete vehicle", wxPoint(420, 510), wxSize(140, 40));
+	this->infoButtonDelete->SetFont(this->fontButtonText);
+	this->infoButtonDelete->Bind(wxEVT_BUTTON, &FrameApp::OnButtonDeleteClicked, this);
+
 
 
 
@@ -314,7 +319,7 @@ void FrameApp::OnButtonLoginClicked(wxCommandEvent& evt)
 
 	// Check if the entered credentials match an admin in the database
 	for (auto& admin : this->dataBase.GetAllAdmins()) {
-		if (admin->getUsername() == username && admin->getPassword() == password) {
+		if (admin.getUsername() == username && admin.getPassword() == password) {
 			// Hide the login panel and show the information panel for admins
 			this->loginPanel->Hide();
 			this->infoPanel->Show();
@@ -918,6 +923,56 @@ void FrameApp::OnButtonEditFuelTypeClicked(wxCommandEvent& evt)
 	}
 }
 
+void FrameApp::OnButtonDeleteClicked(wxCommandEvent& evt)
+{
+	// Get the ID of the selected vehicle from the list
+	int idVehicle = atoi(this->infoListOfCar->GetItemText(this->selectedRowIndex, 0));
+	// Delete the vehicle from the database
+	dataBase.DeleteVehicle(idVehicle);
+	// Update the vehicle panel list
+	this->UpdateVehiclePanelList();
+	// Display confirmation message for deleting the vehicle
+	wxMessageBox("Vehicle deleted successfully");
+}
+
+void FrameApp::OnSearchInput(wxCommandEvent& evt)
+{
+	wxString inputText = evt.GetString();
+
+	if (inputText.IsEmpty()) {
+		this->UpdateVehiclePanelList();
+		return;
+	}
+	else {
+		this->infoListOfCar->DeleteAllItems();
+		std::vector<Vehicle> vehicles;
+		wxString choice = this->infoChoiceSearchBy->GetStringSelection();
+
+		if (choice == "id" || choice == "mileage" || choice == "year") {
+			long id;
+			// Convert the price string to a int
+			if (!inputText.ToLong(&id) || id < 0) {
+				// If conversion fails or price is negative, show an error message
+				wxMessageBox("Invalid Price. Please enter a positive number.", "Error", wxICON_ERROR);
+				return; // Exit the function
+			}
+		}
+		else if (choice == "price") {
+			double price;
+			// Convert the price string to a double
+			if (!inputText.ToDouble(&price) || price < 0.0) {
+				// If conversion fails or price is negative, show an error message
+				wxMessageBox("Invalid Price. Please enter a positive number.", "Error", wxICON_ERROR);
+				return; // Exit the function
+			}
+		}
+		vehicles = this->dataBase.getVehicleWithFilter(choice.ToStdString(),
+													   inputText.ToStdString());
+		this->UpdateVehiclePanelList(vehicles);
+	}
+	evt.Skip();
+}
+
 void FrameApp::OnListItemSelected(wxListEvent& evt)
 {
 	this->selectedRowIndex = evt.GetIndex();
@@ -930,12 +985,30 @@ void FrameApp::UpdateVehiclePanelList()
 	int rowIndex = 0;
 
 	for (auto& vehicle : dataBase.GetAllVehicles()) {
-		this->infoListOfCar->InsertItem(rowIndex, wxString::Format("%d", vehicle->getId()));
-		this->infoListOfCar->SetItem(rowIndex, 1, wxString::Format("%.2f", vehicle->getPrice()));
-		this->infoListOfCar->SetItem(rowIndex, 2, wxString::Format("%d", vehicle->getMileage()));
-		this->infoListOfCar->SetItem(rowIndex, 3, wxString(vehicle->getBrand()));
-		this->infoListOfCar->SetItem(rowIndex, 4, wxString(vehicle->getModel()));
-		this->infoListOfCar->SetItem(rowIndex, 5, wxString::Format("%d", vehicle->getProductionYear()));
+		this->infoListOfCar->InsertItem(rowIndex, wxString::Format("%d", vehicle.getId()));
+		this->infoListOfCar->SetItem(rowIndex, 1, wxString::Format("%.2f", vehicle.getPrice()));
+		this->infoListOfCar->SetItem(rowIndex, 2, wxString::Format("%d", vehicle.getMileage()));
+		this->infoListOfCar->SetItem(rowIndex, 3, wxString(vehicle.getBrand()));
+		this->infoListOfCar->SetItem(rowIndex, 4, wxString(vehicle.getModel()));
+		this->infoListOfCar->SetItem(rowIndex, 5, wxString::Format("%d", vehicle.getProductionYear()));
+
+		rowIndex++;
+	}
+}
+
+void FrameApp::UpdateVehiclePanelList(std::vector<Vehicle>& vehicles)
+{
+	this->infoListOfCar->DeleteAllItems();
+
+	int rowIndex = 0;
+
+	for (auto& vehicle : vehicles) {
+		this->infoListOfCar->InsertItem(rowIndex, wxString::Format("%d", vehicle.getId()));
+		this->infoListOfCar->SetItem(rowIndex, 1, wxString::Format("%.2f", vehicle.getPrice()));
+		this->infoListOfCar->SetItem(rowIndex, 2, wxString::Format("%d", vehicle.getMileage()));
+		this->infoListOfCar->SetItem(rowIndex, 3, wxString(vehicle.getBrand()));
+		this->infoListOfCar->SetItem(rowIndex, 4, wxString(vehicle.getModel()));
+		this->infoListOfCar->SetItem(rowIndex, 5, wxString::Format("%d", vehicle.getProductionYear()));
 
 		rowIndex++;
 	}

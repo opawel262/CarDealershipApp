@@ -18,7 +18,7 @@ DataBaseConnector::DataBaseConnector(const std::string& file_name)
             model TEXT,
             engineCapacity INTEGER,
             bodyType TEXT,
-            productionYear INTEGER,
+            year INTEGER,
             enginePower INTEGER,
             gearbox TEXT,
             seatingCapacity INTEGER,
@@ -49,25 +49,13 @@ DataBaseConnector::DataBaseConnector(const std::string& file_name)
 
 
 }
-
 DataBaseConnector::~DataBaseConnector()
 {
-    if (dataBase)
-    {
-        sqlite3_close(dataBase);
-    }
-    for (auto& Vehicle: this->allVehicles) {
-        delete Vehicle;
-    }
-    for (auto& Admin : this->allAdmins) {
-        delete Admin;
-    }
-
+	sqlite3_close(dataBase);
 }
-
-std::vector<Vehicle*> DataBaseConnector::GetAllVehicles()
+std::vector<Vehicle> DataBaseConnector::GetAllVehicles()
 {
-    std::vector<Vehicle*> vehicles;
+    std::vector<Vehicle> vehicles;
 
     // SQLite query to select all records from the "Vehicle" table
     this->query = "SELECT * FROM Vehicle;";
@@ -82,21 +70,21 @@ std::vector<Vehicle*> DataBaseConnector::GetAllVehicles()
         while (sqlite3_step(statement) == SQLITE_ROW)
         {
             // Assuming you have a constructor in your Vehicle class that takes SQLite column values
-            Vehicle* vehicle = new Vehicle();
+            Vehicle vehicle{};
 
             // Set properties of the vehicle object based on the columns in the result set
-            vehicle->setId(sqlite3_column_int(statement, 0)); 
-            vehicle->setMileage(sqlite3_column_int(statement, 1));
-            vehicle->setPrice(sqlite3_column_double(statement, 2));
-            vehicle->setBrand(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 3))));
-            vehicle->setModel(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 4))));
-            vehicle->setEngineCapacity(sqlite3_column_double(statement, 5));
-            vehicle->setBodyType(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 6))));
-            vehicle->setProductionYear(sqlite3_column_int(statement, 7));
-            vehicle->setEnginePower(sqlite3_column_int(statement, 8));
-            vehicle->setGearbox(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 9))));
-            vehicle->setSeatingCapacity(sqlite3_column_int(statement, 10));
-            vehicle->setFuelType(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 11))));
+            vehicle.setId(sqlite3_column_int(statement, 0)); 
+            vehicle.setMileage(sqlite3_column_int(statement, 1));
+            vehicle.setPrice(sqlite3_column_double(statement, 2));
+            vehicle.setBrand(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 3))));
+            vehicle.setModel(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 4))));
+            vehicle.setEngineCapacity(sqlite3_column_double(statement, 5));
+            vehicle.setBodyType(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 6))));
+            vehicle.setProductionYear(sqlite3_column_int(statement, 7));
+            vehicle.setEnginePower(sqlite3_column_int(statement, 8));
+            vehicle.setGearbox(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 9))));
+            vehicle.setSeatingCapacity(sqlite3_column_int(statement, 10));
+            vehicle.setFuelType(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 11))));
 
             vehicles.push_back(vehicle);
         }
@@ -115,7 +103,7 @@ std::vector<Vehicle*> DataBaseConnector::GetAllVehicles()
 void DataBaseConnector::AddVehicle(Vehicle& vehicle)
 {
     // SQLite query to insert a new record into the "Vehicle" table
-    this->query = "INSERT INTO Vehicle (id, mileage, price, brand, model, engineCapacity, bodyType, productionYear, enginePower, gearbox, seatingCapacity, fuelType) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);";
+    this->query = "INSERT INTO Vehicle (id, mileage, price, brand, model, engineCapacity, bodyType, year, enginePower, gearbox, seatingCapacity, fuelType) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);";
 
     sqlite3_stmt* statement;
     int result = sqlite3_prepare_v2(dataBase, this->query.c_str(), -1, &statement, nullptr);
@@ -232,6 +220,59 @@ Vehicle DataBaseConnector::getVehicle(int vehicleID)
     return vehicle;
 }
 
+std::vector<Vehicle> DataBaseConnector::getVehicleWithFilter(const std::string& filter, const std::string& value)
+{
+    std::vector<Vehicle> vehicles;
+
+    if (filter == "id" || filter == "mileages" || filter == "price" || filter == "year") {
+        this->query = "SELECT * FROM Vehicle WHERE " + filter + " = " + value + "; ";
+    }
+    else {
+        this->query = "SELECT * FROM Vehicle WHERE " + filter + " LIKE '" + value + "%'; ";
+    }
+
+    // Execute the query
+    sqlite3_stmt* statement;
+    int result = sqlite3_prepare_v2(dataBase, this->query.c_str(), -1, &statement, nullptr);
+
+    if (result == SQLITE_OK)
+    {
+        // Fetch data from the result set
+        while (sqlite3_step(statement) == SQLITE_ROW)
+        {
+            // Assuming you have a constructor in your Vehicle class that takes SQLite column values
+            Vehicle vehicle{};
+            // Set properties of the vehicle object based on the columns in the result set
+            vehicle.setId(sqlite3_column_int(statement, 0));
+            vehicle.setMileage(sqlite3_column_int(statement, 1));
+            vehicle.setPrice(sqlite3_column_double(statement, 2));
+            vehicle.setBrand(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 3))));
+            vehicle.setModel(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 4))));
+            vehicle.setEngineCapacity(sqlite3_column_double(statement, 5));
+            vehicle.setBodyType(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 6))));
+            vehicle.setProductionYear(sqlite3_column_int(statement, 7));
+            vehicle.setEnginePower(sqlite3_column_int(statement, 8));
+            vehicle.setGearbox(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 9))));
+            vehicle.setSeatingCapacity(sqlite3_column_int(statement, 10));
+            vehicle.setFuelType(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 11))));
+
+            vehicles.push_back(vehicle);
+        }
+
+        // Finalize the statement
+        sqlite3_finalize(statement);
+    }
+    else
+    {
+        // Pobierz komunikat o błędzie
+        const char* errorMessage = sqlite3_errmsg(dataBase);
+        // Wyświetl komunikat o błędzie lub podejmij inne działania z nim związane
+        wxLogError("SQLite error: %s", errorMessage);
+    }
+
+    return vehicles;
+}
+
 
 void DataBaseConnector::UpdateVehicleEngineCapacity(int vehicleID, double newEngineCapacity)
 {
@@ -278,7 +319,7 @@ void DataBaseConnector::UpdateVehicleBodyType(int vehicleID, const std::string& 
 // Update function for the "productionYear" field
 void DataBaseConnector::UpdateVehicleProductionYear(int vehicleID, int newProductionYear)
 {
-    std::string updateQuery = "UPDATE Vehicle SET productionYear = ? WHERE id = ?;";
+    std::string updateQuery = "UPDATE Vehicle SET year = ? WHERE id = ?;";
     ExecuteUpdateIntParameter(updateQuery, newProductionYear, vehicleID);
 }
 
@@ -375,9 +416,9 @@ void DataBaseConnector::AddAdmin(Admin& admin)
     
 }
 
-std::vector<Admin*> DataBaseConnector::GetAllAdmins()
+std::vector<Admin> DataBaseConnector::GetAllAdmins()
 {
-    std::vector<Admin*> admins;
+    std::vector<Admin> admins;
 
     // SQLite query to select all records from the "Admin" table
     this->query = "SELECT * FROM Admin;";
@@ -392,11 +433,11 @@ std::vector<Admin*> DataBaseConnector::GetAllAdmins()
         while (sqlite3_step(statement) == SQLITE_ROW)
         {
             // Assuming you have a constructor in your Admin class that takes SQLite column values
-            Admin* admin = new Admin();
+            Admin admin{};
 
             // Set properties of the admin object based on the columns in the result set
-            admin->setUsername(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 0))));
-            admin->setPassword(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 1))));
+            admin.setUsername(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 0))));
+            admin.setPassword(std::string(reinterpret_cast<const char*>(sqlite3_column_text(statement, 1))));
 
             admins.push_back(admin);
         }

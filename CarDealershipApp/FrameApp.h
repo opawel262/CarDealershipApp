@@ -58,9 +58,15 @@ public:
 
 	void OnButtonEditFuelTypeClicked(wxCommandEvent& evt);
 
+	void OnButtonDeleteClicked(wxCommandEvent& evt);
+
+	void OnSearchInput(wxCommandEvent& evt);
+
+
 	void OnListItemSelected(wxListEvent& evt);
 
 	void UpdateVehiclePanelList();
+	void UpdateVehiclePanelList(std::vector<Vehicle>& vehicles);
 
 
 
@@ -73,6 +79,7 @@ private:
 	wxPanel* initialPanel;
 	DataBaseConnector dataBase;
 
+	wxValidator* infoSearchInputValidator;
 	wxStaticText* initialStaticText;
 	wxButton* initialButtonEnterUser;
 	wxButton* initialButtonEnterAdmin;
@@ -111,6 +118,7 @@ private:
 	wxButton* infoSearchButton;
 	wxButton* infoButtonEnterSpecific;
 	wxArrayString* infoChoices;
+	wxButton* infoButtonDelete;
 
 	wxButton* specificButtonBack;
 	wxPanel* specicInfoPanel;
