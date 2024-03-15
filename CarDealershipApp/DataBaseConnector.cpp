@@ -3,12 +3,17 @@
 #include <wx/wx.h>
 DataBaseConnector::DataBaseConnector(const std::string& file_name)
 {
+    // Open the SQLite database file
     int result = sqlite3_open(file_name.c_str(), &dataBase);
 
+    // Check if the database connection was successful
     if (result != SQLITE_OK)
     {
+        // Log an error if connecting to the database failed
         wxLogError("Error connecting to database");
     }
+
+    // Define SQL query to create the Vehicle table
     this->query = R"(
         CREATE TABLE IF NOT EXISTS Vehicle (
             id INTEGER PRIMARY KEY,
@@ -26,13 +31,17 @@ DataBaseConnector::DataBaseConnector(const std::string& file_name)
         );
     )";
 
+    // Execute the query to create the Vehicle table
     result = sqlite3_exec(dataBase, this->query.c_str(), nullptr, nullptr, nullptr);
 
+    // Check if creating the Vehicle table was successful
     if (result != SQLITE_OK)
     {
+        // Log an error if creating the Vehicle table failed
         wxLogError("Error creating Vehicle table: %s", sqlite3_errmsg(dataBase));
     }
 
+    // Define SQL query to create the Admin table
     this->query = R"(
         CREATE TABLE IF NOT EXISTS Admin (
             username TEXT,
@@ -40,14 +49,15 @@ DataBaseConnector::DataBaseConnector(const std::string& file_name)
         );
     )";
 
+    // Execute the query to create the Admin table
     result = sqlite3_exec(dataBase, this->query.c_str(), nullptr, nullptr, nullptr);
 
+    // Check if creating the Admin table was successful
     if (result != SQLITE_OK)
     {
+        // Log an error if creating the Admin table failed
         wxLogError("Error creating Admin table: %s", sqlite3_errmsg(dataBase));
     }
-
-
 }
 DataBaseConnector::~DataBaseConnector()
 {
@@ -172,25 +182,29 @@ void DataBaseConnector::DeleteVehicle(int vehicleID)
 }
 Vehicle DataBaseConnector::getVehicle(int vehicleID)
 {
+    // Set the SQL query to select a vehicle by ID
     this->query = "SELECT * FROM Vehicle WHERE id = ?;";
 
+    // Create a Vehicle object to store the retrieved data
     Vehicle vehicle;
     sqlite3_stmt* statement;
 
-    // Przygotuj zapytanie SQL z parametrem
+    // Prepare the SQL statement
     int result = sqlite3_prepare_v2(dataBase, this->query.c_str(), -1, &statement, nullptr);
 
+    // Check if the statement was prepared successfully
     if (result == SQLITE_OK)
     {
-        // Przypisz wartość do parametru w zapytaniu SQL
+        // Bind the vehicle ID parameter to the first placeholder in the statement
         sqlite3_bind_int(statement, 1, vehicleID);
 
-        // Wykonaj zapytanie
+        // Execute the query
         result = sqlite3_step(statement);
 
+        // Check if a row was retrieved
         if (result == SQLITE_ROW)
         {
-            // Pobierz dane z kolumn
+            // Retrieve data from columns and set them in the Vehicle object
             vehicle.setId(sqlite3_column_int(statement, 0));
             vehicle.setMileage(sqlite3_column_int(statement, 1));
             vehicle.setPrice(sqlite3_column_double(statement, 2));
@@ -206,17 +220,20 @@ Vehicle DataBaseConnector::getVehicle(int vehicleID)
         }
         else
         {
+            // Log an error if no vehicle was found with the given ID
             wxLogError("No vehicle found with ID: %d", vehicleID);
         }
 
-        // Finalizuj zapytanie
+        // Finalize the statement to release resources
         sqlite3_finalize(statement);
     }
     else
     {
+        // Log an error if preparing the statement failed
         wxLogError("Error preparing SQL statement");
     }
 
+    // Return the retrieved vehicle object
     return vehicle;
 }
 
@@ -353,18 +370,24 @@ void DataBaseConnector::UpdateVehicleFuelType(int vehicleID, const std::string& 
 
 void DataBaseConnector::ExecuteUpdateStringParameter(const std::string& updateQuery, const std::string& parameter, int vehicleID)
 {
+    // Prepare the SQL statement
     sqlite3_stmt* statement;
     int result = sqlite3_prepare_v2(dataBase, updateQuery.c_str(), -1, &statement, nullptr);
 
+    // Check if the statement was prepared successfully
     if (result == SQLITE_OK)
     {
+        // Bind the string parameter to the first placeholder in the statement
         sqlite3_bind_text(statement, 1, parameter.c_str(), -1, SQLITE_STATIC);
+        // Bind the vehicle ID parameter to the second placeholder in the statement
         sqlite3_bind_int(statement, 2, vehicleID);
 
+        // Execute the prepared statement
         ExecuteUpdateStatement(statement);
     }
     else
     {
+        // Log an error message if preparing the statement failed
         wxLogError("Error preparing update statement: %s", sqlite3_errmsg(dataBase));
     }
 }
@@ -372,18 +395,24 @@ void DataBaseConnector::ExecuteUpdateStringParameter(const std::string& updateQu
 // Helper function for executing update queries with integer parameters
 void DataBaseConnector::ExecuteUpdateIntParameter(const std::string& updateQuery, int parameter, int vehicleID)
 {
+    // Prepare the SQL statement
     sqlite3_stmt* statement;
     int result = sqlite3_prepare_v2(dataBase, updateQuery.c_str(), -1, &statement, nullptr);
 
+    // Check if the statement was prepared successfully
     if (result == SQLITE_OK)
     {
+        // Bind the integer parameter to the first placeholder in the statement
         sqlite3_bind_int(statement, 1, parameter);
+        // Bind the vehicle ID parameter to the second placeholder in the statement
         sqlite3_bind_int(statement, 2, vehicleID);
 
+        // Execute the prepared statement
         ExecuteUpdateStatement(statement);
     }
     else
     {
+        // Log an error message if preparing the statement failed
         wxLogError("Error preparing update statement: %s", sqlite3_errmsg(dataBase));
     }
 }
@@ -391,13 +420,17 @@ void DataBaseConnector::ExecuteUpdateIntParameter(const std::string& updateQuery
 // Helper function for executing update statements
 void DataBaseConnector::ExecuteUpdateStatement(sqlite3_stmt* statement)
 {
+    // Execute the prepared statement
     int result = sqlite3_step(statement);
 
+    // Check if the execution was successful
     if (result != SQLITE_DONE)
     {
+        // Log an error message if updating the vehicle field failed
         wxLogError("Error updating vehicle field: %s", sqlite3_errmsg(dataBase));
     }
 
+    // Finalize the statement to release resources
     sqlite3_finalize(statement);
 }
 
@@ -460,18 +493,24 @@ std::vector<Admin> DataBaseConnector::GetAllAdmins()
 }
 void DataBaseConnector::ExecuteUpdateDoubleParameter(const std::string& updateQuery, double parameter, int vehicleID)
 {
+    // Prepare the SQL statement
     sqlite3_stmt* statement;
     int result = sqlite3_prepare_v2(dataBase, updateQuery.c_str(), -1, &statement, nullptr);
 
+    // Check if the statement was prepared successfully
     if (result == SQLITE_OK)
     {
+        // Bind the double parameter to the first placeholder in the statement
         sqlite3_bind_double(statement, 1, parameter);
+        // Bind the integer parameter to the second placeholder in the statement
         sqlite3_bind_int(statement, 2, vehicleID);
 
+        // Execute the prepared statement
         ExecuteUpdateStatement(statement);
     }
     else
     {
+        // Log an error message if preparing the statement failed
         wxLogError("Error preparing update statement: %s", sqlite3_errmsg(dataBase));
     }
 }

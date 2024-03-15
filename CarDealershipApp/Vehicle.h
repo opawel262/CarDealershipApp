@@ -6,6 +6,7 @@
 
 class Vehicle {
 private:
+    // Private member variables representing vehicle attributes
     int id;
     int mileage;
     double price;
@@ -20,12 +21,14 @@ private:
     std::string fuelType;
 
 public:
-    Vehicle() = default;
+    // Constructors
+    Vehicle() = default; // Default constructor
     Vehicle(int id, int mileage, double price, const std::string& brand,
         const std::string& model, int productionYear, double engineCapacity,
         const std::string& bodyType, int enginePower, const std::string& gearbox,
         int seatingCapacity, const std::string& fuelType);
 
+    // Getter methods for retrieving vehicle attributes
     double getEngineCapacity() const;
     int getId() const;
     std::string getBodyType() const;
@@ -39,6 +42,7 @@ public:
     std::string getBrand() const;
     std::string getModel() const;
 
+    // Setter methods for modifying vehicle attributes
     void setEngineCapacity(double value);
     void setBodyType(const std::string& value);
     void setMileage(int value);
@@ -53,4 +57,4 @@ public:
     void setId(int value);
 };
 
-#endif 
+#endif // VEHICLE_H
