@@ -30,7 +30,7 @@ public:
 	void AddVehicle(Vehicle& vehicle);
 	void AddAdmin(Admin& admin);
 
-	//void UpdateVehicleId(int vehicleID, int newVehicleID);
+	void UpdateVehicleId(int vehicleID, int newVehicleID);
 
 	void UpdateVehicleEngineCapacity(int vehicleID, double newEngineCapacity);
 

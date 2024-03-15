@@ -143,7 +143,7 @@ FrameApp::FrameApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title), data
 	this->infoButtonDelete = new wxButton(this->infoPanel, wxID_ANY, "Delete vehicle", wxPoint(420, 510), wxSize(140, 40));
 	this->infoButtonDelete->SetFont(this->fontButtonText);
 	this->infoButtonDelete->Bind(wxEVT_BUTTON, &FrameApp::OnButtonDeleteClicked, this);
-
+	this->infoButtonDelete->Hide();
 
 
 
@@ -249,7 +249,6 @@ FrameApp::FrameApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title), data
 
 	this->adminEditIdButton = new wxButton(this->specicInfoPanel, wxID_ANY, "Edit", wxPoint(360, 120), wxSize(40, 30));
 	this->adminEditIdButton->Bind(wxEVT_BUTTON, &FrameApp::OnButtonEditIdCLicked, this);
-	this->adminEditIdButton->Enable(false);
 
 	this->adminEditMileageButton = new wxButton(this->specicInfoPanel, wxID_ANY, "Edit", wxPoint(360, 170), wxSize(40, 30));
 	this->adminEditMileageButton->Bind(wxEVT_BUTTON, &FrameApp::OnButtonEditMileageClicked, this);
@@ -283,6 +282,21 @@ FrameApp::FrameApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title), data
 
 	this->adminEditFuelTypeButton = new wxButton(this->specicInfoPanel, wxID_ANY, "Edit", wxPoint(710, 370), wxSize(40, 30));
 	this->adminEditFuelTypeButton->Bind(wxEVT_BUTTON, &FrameApp::OnButtonEditFuelTypeClicked, this);
+
+	this->adminEditIdButton->Hide();
+	this->adminEditMileageButton->Hide();
+	this->adminEditModelButton->Hide();
+	this->adminEditBodyTypeButton->Hide();
+	this->adminEditEngineCapacityButton->Hide();
+	this->adminEditFuelTypeButton->Hide();
+	this->adminEditGearboxButton->Hide();
+	this->adminEditModelButton->Hide();
+	this->adminEditEnginePowerButton->Hide();
+	this->adminEditSeatingCapacityButton->Hide();
+	this->adminEditPriceButton->Hide();
+	this->adminEditBrandButton->Hide();
+	this->adminEditYearButton->Hide();
+
 
 	this->adminEnterAddPanel->Hide();
 	this->adminAddPanel->Hide();
@@ -320,14 +334,28 @@ void FrameApp::OnButtonLoginClicked(wxCommandEvent& evt)
 	// Check if the entered credentials match an admin in the database
 	for (auto& admin : this->dataBase.GetAllAdmins()) {
 		if (admin.getUsername() == username && admin.getPassword() == password) {
+			this->adminLogged = true;
 			// Hide the login panel and show the information panel for admins
 			this->loginPanel->Hide();
 			this->infoPanel->Show();
-			this->adminLogged = true;
+
+			this->adminEditIdButton->Show();
+			this->adminEditMileageButton->Show();
+			this->adminEditModelButton->Show();
+			this->adminEditBodyTypeButton->Show();
+			this->adminEditEngineCapacityButton->Show();
+			this->adminEditFuelTypeButton->Show();
+			this->adminEditGearboxButton->Show();
+			this->adminEditModelButton->Show();
+			this->adminEditEnginePowerButton->Show();
+			this->adminEditSeatingCapacityButton->Show();
+			this->adminEditPriceButton->Show();
+			this->adminEditBrandButton->Show();
+			this->adminEditYearButton->Show();
 
 			// Show admin-specific elements
 			this->adminEnterAddPanel->Show();
-			this->adminEditIdButton->Show();
+			this->infoButtonDelete->Show();
 			wxMessageBox("Logged in successfully");
 		}
 	}
@@ -359,6 +387,7 @@ void FrameApp::OnButtonRegisterClicked(wxCommandEvent& evt)
 void FrameApp::OnButtonLoginBackClicked(wxCommandEvent& evt)
 {
 	// Hide the login panel and show the initial panel
+
 	this->loginPanel->Hide();
 	this->initialPanel->Show();
 }
@@ -373,11 +402,31 @@ void FrameApp::OnButtonRegisterBackClicked(wxCommandEvent& evt)
 void FrameApp::OnButtonInfoBackClicked(wxCommandEvent& evt)
 {
 	// Hide the information panel and show the initial panel
-	this->infoPanel->Hide();
-	this->initialPanel->Show();
 	// Hide the admin enter add panel and set admin logged status to false
+	this->infoPanel->Hide();
+
 	this->adminEnterAddPanel->Hide();
+	this->adminEditIdButton->Hide();
+	this->adminEditMileageButton->Hide();
+	this->adminEditModelButton->Hide();
+	this->adminEditBodyTypeButton->Hide();
+	this->adminEditEngineCapacityButton->Hide();
+	this->adminEditFuelTypeButton->Hide();
+	this->adminEditGearboxButton->Hide();
+	this->adminEditModelButton->Hide();
+	this->adminEditEnginePowerButton->Hide();
+	this->adminEditSeatingCapacityButton->Hide();
+	this->adminEditPriceButton->Hide();
+	this->adminEditBrandButton->Hide();
+	this->adminEditYearButton->Hide();
+
+
+	this->adminEnterAddPanel->Hide();
+
 	this->adminLogged = false;
+	this->infoButtonDelete->Hide();
+	// Show initial panel
+	this->initialPanel->Show();
 }
 
 void FrameApp::OnButtonSpecificBackClicked(wxCommandEvent& evt)
@@ -570,9 +619,25 @@ void FrameApp::OnButtonEditIdCLicked(wxCommandEvent& evt)
 		this->specificInputId->SetEditable(true);
 	}
 	else {
+		// Switch to "Edit" mode
+
+		// Validate and retrieve the year
+		wxString idString = this->specificInputYear->GetValue();
+		long id;
+
+		// Check if the year is a valid positive integer
+		if (!idString.ToLong(&id) || id < 0) {
+			// If not valid, show an error message
+			wxMessageBox("Invalid Year. Please enter a positive integer.", "Error", wxICON_ERROR);
+			return; // Exit the function
+		}
+
+		// Disable editing after saving
 		this->specificInputId->SetEditable(false);
+
+		// Change the button label back to "Edit"
 		this->adminEditIdButton->SetLabel("Edit");
-		//this->dataBase.UpdateVehicleId(atoi(this->specificInputId->GetValue().ToStdString().c_str()), atoi(this->specificInputId->GetValue().ToStdString().c_str()));
+		this->dataBase.UpdateVehicleId(atoi(this->specificInputId->GetValue().ToStdString().c_str()), atoi(this->specificInputId->GetValue().ToStdString().c_str()));
 	}
 }
 

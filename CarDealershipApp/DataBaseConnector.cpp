@@ -416,6 +416,12 @@ void DataBaseConnector::AddAdmin(Admin& admin)
     
 }
 
+void DataBaseConnector::UpdateVehicleId(int vehicleID, int newVehicleID)
+{
+    std::string updateQuery = "UPDATE Vehicle SET id = ? WHERE id = ?;";
+    ExecuteUpdateIntParameter(updateQuery, newVehicleID, vehicleID);
+}
+
 std::vector<Admin> DataBaseConnector::GetAllAdmins()
 {
     std::vector<Admin> admins;
